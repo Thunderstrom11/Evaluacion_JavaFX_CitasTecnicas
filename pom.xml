@@ -11,21 +11,31 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<junit.version>5.12.1</junit.version>  </properties>
+    <javafx.version>21.0.6</javafx.version>
+    <lombok.version>1.18.48</lombok.version>
+    <junit.version>5.12.1</junit.version>
+  </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
-      <version>21.0.6</version>
+      <version>${javafx.version}</version>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
-      <version>21.0.6</version>
+      <version>${javafx.version}</version>
     </dependency>
 
-<dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>${junit.version}</version>
@@ -36,7 +46,8 @@
       <artifactId>junit-jupiter-engine</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
-    </dependency>  </dependencies>
+    </dependency>
+  </dependencies>
 
   <build>
     <plugins>
@@ -47,6 +58,13 @@
         <configuration>
           <source>25</source>
           <target>25</target>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${lombok.version}</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
       <plugin>
