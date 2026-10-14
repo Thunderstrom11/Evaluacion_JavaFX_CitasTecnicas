@@ -1,5 +1,4 @@
 package ni.edu.uam.evaluacion_javafx_citastecnicas;
-// proyecto
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
