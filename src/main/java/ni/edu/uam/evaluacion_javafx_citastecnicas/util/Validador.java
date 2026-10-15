@@ -10,7 +10,7 @@ public class Validador {
     public static final List<String> ESTADOS =
             List.of("Pendiente", "En proceso", "Finalizada", "Cancelada");
 
-    private static final String REGEX_CORREO = "^[\\w.+-]+@[\\w-]+\\.[a-zA-Z]{2,}$";
+    private static final String REGEX_CORREO = "^[\\w.+-]+@[\\w-]+(\\.[a-zA-Z]{2,})+$";
 
     private Validador() {
     }
