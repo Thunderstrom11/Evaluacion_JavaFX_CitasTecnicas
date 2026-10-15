@@ -1,84 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox spacing="12.0" prefHeight="660.0" prefWidth="900.0"
-      style="-fx-background-color: #eef2f7;"
-      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="ni.edu.uam.evaluacion_javafx_citastecnicas.controller.CitaController">
+<VBox prefHeight="660.0" prefWidth="900.0" spacing="12.0" style="-fx-background-color: #eef2f7;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ni.edu.uam.evaluacion_javafx_citastecnicas.controller.CitaController">
 
     <padding>
         <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
     </padding>
 
     <children>
-        <Label text="Gestion de citas tecnicas">
-            <font>
-                <Font name="System Bold" size="18.0" />
-            </font>
-        </Label>
+      <HBox alignment="CENTER" prefHeight="0.0" prefWidth="868.0" spacing="10.0">
+         <children>
+            <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@iconos/Citas.png" />
+               </image></ImageView>
+              <Label prefHeight="38.0" prefWidth="229.0" text="Gestion de citas tecnicas">
+                  <font>
+                      <Font name="System Bold" size="18.0" />
+                  </font>
+              </Label>
+         </children>
+      </HBox>
 
         <!-- Formulario -->
         <GridPane hgap="10.0" vgap="8.0">
             <children>
-                <Label text="ID:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-                <TextField fx:id="txtId" prefWidth="90.0" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="txtId" prefWidth="90.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                <Label text="Cliente:" GridPane.rowIndex="0" GridPane.columnIndex="2" />
-                <ComboBox fx:id="cmbCliente" prefWidth="260.0" GridPane.rowIndex="0" GridPane.columnIndex="3" />
+                <Label text="Cliente:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                <ComboBox fx:id="cmbCliente" prefWidth="260.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
 
-                <Label text="Fecha:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-                <DatePicker fx:id="dtpFecha" prefWidth="150.0" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                <Label text="Fecha:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <DatePicker fx:id="dtpFecha" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                <Label text="Hora (HH:mm):" GridPane.rowIndex="1" GridPane.columnIndex="2" />
-                <TextField fx:id="txtHora" prefWidth="260.0" promptText="09:30"
-                           GridPane.rowIndex="1" GridPane.columnIndex="3" />
+                <Label text="Hora (HH:mm):" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <TextField fx:id="txtHora" prefWidth="260.0" promptText="09:30" GridPane.columnIndex="3" GridPane.rowIndex="1" />
 
-                <Label text="Servicio:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
-                <TextField fx:id="txtTipoServicio" prefWidth="150.0" promptText="Mantenimiento"
-                           GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                <Label text="Servicio:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <TextField fx:id="txtTipoServicio" prefWidth="150.0" promptText="Mantenimiento" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                <Label text="Estado:" GridPane.rowIndex="2" GridPane.columnIndex="2" />
-                <ComboBox fx:id="cmbEstado" prefWidth="260.0" GridPane.rowIndex="2" GridPane.columnIndex="3" />
+                <Label text="Estado:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <ComboBox fx:id="cmbEstado" prefWidth="260.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
 
-                <Label text="Descripcion:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
-                <TextField fx:id="txtDescripcion" prefWidth="560.0"
-                           promptText="Detalle del trabajo a realizar"
-                           GridPane.rowIndex="3" GridPane.columnIndex="1" GridPane.columnSpan="3" />
+                <Label text="Descripcion:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <TextField fx:id="txtDescripcion" prefWidth="560.0" promptText="Detalle del trabajo a realizar" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
             </children>
+         <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
         </GridPane>
 
         <!-- Botones del CRUD -->
         <HBox spacing="10.0">
             <children>
-                <Button onAction="#guardar" text="Guardar" prefWidth="110.0" />
-                <Button onAction="#editar" text="Editar" prefWidth="110.0" />
-                <Button onAction="#eliminar" text="Eliminar" prefWidth="110.0" />
-                <Button onAction="#limpiar" text="Limpiar" prefWidth="110.0" />
-                <Button onAction="#cerrar" text="Cerrar" prefWidth="110.0" />
+                <Button onAction="#guardar" prefWidth="110.0" text="Guardar" />
+                <Button onAction="#editar" prefWidth="110.0" text="Editar" />
+                <Button onAction="#eliminar" prefWidth="110.0" text="Eliminar" />
+                <Button onAction="#limpiar" prefWidth="110.0" text="Limpiar" />
+                <Button onAction="#cerrar" prefWidth="110.0" text="Cerrar" />
             </children>
         </HBox>
 
         <!-- Filtros (RF06) -->
-        <HBox spacing="10.0" alignment="CENTER_LEFT">
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
             <children>
                 <Label text="Filtrar por estado:" />
                 <ComboBox fx:id="cmbFiltroEstado" prefWidth="180.0" />
                 <Label text="y fecha:" />
                 <DatePicker fx:id="dtpFiltroFecha" prefWidth="160.0" />
-                <Button onAction="#filtrar" text="Filtrar" prefWidth="100.0" />
-                <Button onAction="#limpiarFiltros" text="Limpiar filtros" prefWidth="130.0" />
+                <Button onAction="#filtrar" prefWidth="100.0" text="Filtrar" />
+                <Button onAction="#limpiarFiltros" prefWidth="130.0" text="Limpiar filtros" />
             </children>
         </HBox>
 

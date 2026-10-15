@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -19,18 +20,51 @@
 
     <Label text="Sistema de gestion de citas de atencion tecnica" textFill="#5a6472" />
 
-    <Button onAction="#abrirClientes" prefHeight="42.0" prefWidth="280.0" text="Clientes">
+    <Button contentDisplay="RIGHT" onAction="#abrirClientes" prefHeight="42.0" prefWidth="280.0" text="Clientes">
       <font>
          <Font name="System Bold" size="12.0" />
-      </font></Button>
+      </font>
+        <tooltip>
+            <Tooltip text="Abrir seccion de clientes" />
+        </tooltip>
+        <graphic>
+            <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@./iconos/Cliente.png" />
+                </image>
+            </ImageView>
+        </graphic>
+      <opaqueInsets>
+         <Insets />
+      </opaqueInsets></Button>
 
-    <Button onAction="#abrirCitas" prefHeight="42.0" prefWidth="280.0" text="Citas tecnicas">
+    <Button contentDisplay="RIGHT" onAction="#abrirCitas" prefHeight="42.0" prefWidth="280.0" text="Citas tecnicas">
       <font>
          <Font name="System Bold" size="12.0" />
-      </font></Button>
+      </font>
+        <tooltip>
+            <Tooltip text="Abrir seccion de Citas" />
+        </tooltip>
+        <graphic>
+        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@./iconos/Citas.png" />
+            </image>
+        </ImageView>
+        </graphic></Button>
 
-    <Button onAction="#salir" prefHeight="42.0" prefWidth="280.0" text="Salir">
+    <Button contentDisplay="RIGHT" onAction="#salir" prefHeight="42.0" prefWidth="280.0" text="Salir">
       <font>
          <Font name="System Bold" size="12.0" />
-      </font></Button>
+      </font>
+        <tooltip>
+            <Tooltip text="Cerrar aplicación" />
+        </tooltip>
+        <graphic>
+            <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@./iconos/Salir.png" />
+                </image>
+            </ImageView>
+        </graphic></Button>
 </VBox>
