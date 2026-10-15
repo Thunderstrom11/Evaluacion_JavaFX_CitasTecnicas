@@ -45,7 +45,8 @@ public class ClienteController {
         colApellidos.setCellValueFactory(new PropertyValueFactory<>("apellidos"));
         colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
         colCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
-        colActivo.setCellValueFactory(new PropertyValueFactory<>("activo"));
+        colActivo.setCellValueFactory(f ->
+                new javafx.beans.property.SimpleBooleanProperty(f.getValue().isActivo()));
 
         tblClientes.setItems(datos);
         txtId.setDisable(true);
