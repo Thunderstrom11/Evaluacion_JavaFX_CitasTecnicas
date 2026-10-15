@@ -30,6 +30,9 @@ public class Validador {
 
     // devolver null si no es una hora valida.
     public static LocalTime parsearHora(String texto) {
+        if (texto == null) {
+            return null;
+        }
         try {
             return LocalTime.parse(texto.trim());
         } catch (DateTimeParseException e) {
