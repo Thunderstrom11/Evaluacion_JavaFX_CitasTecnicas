@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -10,12 +11,20 @@
     <padding>
         <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
     </padding>
-
-    <Label text="Gestion de clientes">
-        <font>
-            <Font name="System Bold" size="18.0" />
-        </font>
-    </Label>
+   <HBox alignment="CENTER" prefHeight="26.0" prefWidth="748.0" spacing="10.0">
+      <children>
+         <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@iconos/Cliente.png" />
+            </image></ImageView>
+      
+          <Label prefHeight="41.0" prefWidth="200.0" text="Gestion de clientes">
+              <font>
+                  <Font name="System Bold" size="18.0" />
+              </font>
+          </Label>
+      </children>
+   </HBox>
 
     <!-- Formulario -->
     <GridPane hgap="10.0" vgap="8.0">
