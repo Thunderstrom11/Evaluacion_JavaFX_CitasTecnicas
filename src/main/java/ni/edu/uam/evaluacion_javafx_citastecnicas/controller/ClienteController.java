@@ -7,7 +7,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.dao.ClienteDAO;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.model.Cliente;
@@ -40,11 +39,11 @@ public class ClienteController {
 
     @FXML
     public void initialize() {
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colNombres.setCellValueFactory(new PropertyValueFactory<>("nombres"));
-        colApellidos.setCellValueFactory(new PropertyValueFactory<>("apellidos"));
-        colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
-        colCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
+        colId.setCellValueFactory(f -> new javafx.beans.property.SimpleIntegerProperty(f.getValue().getId()));
+        colNombres.setCellValueFactory(f -> new javafx.beans.property.SimpleStringProperty(f.getValue().getNombres()));
+        colApellidos.setCellValueFactory(f -> new javafx.beans.property.SimpleStringProperty(f.getValue().getApellidos()));
+        colTelefono.setCellValueFactory(f -> new javafx.beans.property.SimpleStringProperty(f.getValue().getTelefono()));
+        colCorreo.setCellValueFactory(f -> new javafx.beans.property.SimpleStringProperty(f.getValue().getCorreo()));
         colActivo.setCellValueFactory(f ->
                 new javafx.beans.property.SimpleBooleanProperty(f.getValue().isActivo()));
 
