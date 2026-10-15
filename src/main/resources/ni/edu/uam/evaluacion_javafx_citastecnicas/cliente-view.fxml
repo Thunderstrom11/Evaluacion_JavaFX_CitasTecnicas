@@ -11,22 +11,19 @@
     <padding>
         <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
     </padding>
-   <HBox alignment="CENTER" prefHeight="26.0" prefWidth="748.0" spacing="10.0">
-      <children>
-         <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@iconos/Cliente.png" />
-            </image></ImageView>
-      
-          <Label prefHeight="41.0" prefWidth="200.0" text="Gestion de clientes">
-              <font>
-                  <Font name="System Bold" size="18.0" />
-              </font>
-          </Label>
-      </children>
-   </HBox>
+    <HBox alignment="CENTER" prefHeight="26.0" prefWidth="748.0" spacing="10.0">
+        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@iconos/Cliente.png" />
+        </ImageView>
 
-    <!-- Formulario -->
+        <Label prefHeight="41.0" prefWidth="200.0" text="Gestion de clientes">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+    </HBox>
+
+
     <GridPane hgap="10.0" vgap="8.0">
         <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <TextField fx:id="txtId" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
@@ -57,7 +54,7 @@
       </rowConstraints>
     </GridPane>
 
-    <!-- Botones -->
+
     <HBox spacing="10.0">
         <Button onAction="#guardar" prefWidth="110.0" text="Guardar" />
         <Button onAction="#editar" prefWidth="110.0" text="Editar" />
@@ -66,7 +63,7 @@
         <Button onAction="#cerrar" prefWidth="110.0" text="Cerrar" />
     </HBox>
 
-    <!-- Busqueda (RF05) -->
+
     <HBox alignment="CENTER_LEFT" spacing="10.0">
         <Label text="Buscar:" />
         <TextField fx:id="txtBuscar" prefWidth="320.0" promptText="Ana Gutierrez" />
@@ -74,7 +71,7 @@
         <Button onAction="#verTodos" prefWidth="100.0" text="Ver todos" />
     </HBox>
 
-    <!-- Tabla -->
+
     <TableView fx:id="tblClientes" prefHeight="320.0" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="colId" prefWidth="60.0" text="ID" />

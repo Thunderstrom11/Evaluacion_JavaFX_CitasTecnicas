@@ -29,9 +29,7 @@
         </tooltip>
         <graphic>
             <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                <image>
-                    <Image url="@./iconos/Cliente.png" />
-                </image>
+                <Image url="@./iconos/Cliente.png"/>
             </ImageView>
         </graphic>
       <opaqueInsets>
@@ -46,11 +44,9 @@
             <Tooltip text="Abrir seccion de Citas" />
         </tooltip>
         <graphic>
-        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@./iconos/Citas.png" />
-            </image>
-        </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@./iconos/Citas.png"/>
+            </ImageView>
         </graphic></Button>
 
     <Button contentDisplay="RIGHT" onAction="#salir" prefHeight="42.0" prefWidth="280.0" text="Salir">
@@ -62,9 +58,7 @@
         </tooltip>
         <graphic>
             <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                <image>
-                    <Image url="@./iconos/Salir.png" />
-                </image>
+                <Image url="@./iconos/Salir.png"/>
             </ImageView>
         </graphic></Button>
 </VBox>
