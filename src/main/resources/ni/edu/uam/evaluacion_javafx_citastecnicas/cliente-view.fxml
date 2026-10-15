@@ -1,14 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="ni.edu.uam.evaluacion_javafx_citastecnicas.controller.ClienteController"
-            prefHeight="400.0" prefWidth="600.0">
+<VBox prefHeight="620.0" prefWidth="780.0" spacing="12.0" style="-fx-background-color: #eef2f7;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ni.edu.uam.evaluacion_javafx_citastecnicas.controller.ClienteController">
 
-</AnchorPane>
+    <padding>
+        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+    </padding>
+
+    <Label text="Gestion de clientes">
+        <font>
+            <Font name="System Bold" size="18.0" />
+        </font>
+    </Label>
+
+    <!-- Formulario -->
+    <GridPane hgap="10.0" vgap="8.0">
+        <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="txtId" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+        <Label text="Nombres:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+        <TextField fx:id="txtNombres" prefWidth="220.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+        <Label text="Apellidos:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+        <TextField fx:id="txtApellidos" prefWidth="120.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+        <Label text="Telefono:" GridPane.rowIndex="1" />
+        <TextField fx:id="txtTelefono" prefWidth="220.0" promptText="8888333" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label text="Correo:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <TextField fx:id="txtCorreo" prefHeight="26.0" prefWidth="225.0" promptText="Cliente1@correo.com" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <CheckBox fx:id="chkActivo" mnemonicParsing="false" text="Activo" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+      <columnConstraints>
+         <ColumnConstraints />
+         <ColumnConstraints />
+         <ColumnConstraints />
+         <ColumnConstraints />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
+    </GridPane>
+
+    <!-- Botones -->
+    <HBox spacing="10.0">
+        <Button onAction="#guardar" prefWidth="110.0" text="Guardar" />
+        <Button onAction="#editar" prefWidth="110.0" text="Editar" />
+        <Button onAction="#eliminar" prefWidth="110.0" text="Eliminar" />
+        <Button onAction="#limpiar" prefWidth="110.0" text="Limpiar" />
+        <Button onAction="#cerrar" prefWidth="110.0" text="Cerrar" />
+    </HBox>
+
+    <!-- Busqueda (RF05) -->
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <Label text="Buscar:" />
+        <TextField fx:id="txtBuscar" prefWidth="320.0" promptText="Ana Gutierrez" />
+        <Button onAction="#buscar" prefWidth="100.0" text="Buscar" />
+        <Button onAction="#verTodos" prefWidth="100.0" text="Ver todos" />
+    </HBox>
+
+    <!-- Tabla -->
+    <TableView fx:id="tblClientes" prefHeight="320.0" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colId" prefWidth="60.0" text="ID" />
+            <TableColumn fx:id="colNombres" prefWidth="150.0" text="Nombres" />
+            <TableColumn fx:id="colApellidos" prefWidth="150.0" text="Apellidos" />
+            <TableColumn fx:id="colTelefono" prefWidth="110.0" text="Telefono" />
+            <TableColumn fx:id="colCorreo" prefWidth="202.20001220703125" text="Correo" />
+            <TableColumn fx:id="colActivo" prefWidth="89.0" text="Activo" />
+        </columns>
+    </TableView>
+</VBox>
