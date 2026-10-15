@@ -13,13 +13,13 @@
     </padding>
 
     <children>
-      <HBox alignment="CENTER" prefHeight="0.0" prefWidth="868.0" spacing="10.0">
+      <HBox alignment="CENTER" prefHeight="13.0" prefWidth="868.0" spacing="10.0">
          <children>
             <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@iconos/Citas.png" />
                </image></ImageView>
-              <Label prefHeight="38.0" prefWidth="229.0" text="Gestion de citas tecnicas">
+              <Label text="Gestion de citas tecnicas">
                   <font>
                       <Font name="System Bold" size="18.0" />
                   </font>
