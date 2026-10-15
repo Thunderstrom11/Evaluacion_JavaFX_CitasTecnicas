@@ -8,7 +8,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.dao.CitaTecnicaDAO;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.dao.ClienteDAO;
@@ -52,12 +51,12 @@ public class CitaController {
 
     @FXML
     public void initialize() {
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colCliente.setCellValueFactory(new PropertyValueFactory<>("nombreCliente"));
-        colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
-        colHora.setCellValueFactory(new PropertyValueFactory<>("hora"));
-        colServicio.setCellValueFactory(new PropertyValueFactory<>("tipoServicio"));
-        colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
+        colId.setCellValueFactory(f -> new javafx.beans.property.SimpleIntegerProperty(f.getValue().getId()));
+        colCliente.setCellValueFactory(f -> new javafx.beans.property.SimpleStringProperty(f.getValue().getNombreCliente()));
+        colFecha.setCellValueFactory(f -> new javafx.beans.property.SimpleObjectProperty<>(f.getValue().getFecha()));
+        colHora.setCellValueFactory(f -> new javafx.beans.property.SimpleObjectProperty<>(f.getValue().getHora()));
+        colServicio.setCellValueFactory(f -> new javafx.beans.property.SimpleStringProperty(f.getValue().getTipoServicio()));
+        colEstado.setCellValueFactory(f -> new javafx.beans.property.SimpleStringProperty(f.getValue().getEstado()));
 
         tblCitas.setItems(datos);
 
