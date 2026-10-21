@@ -41,7 +41,7 @@ public class ClienteController {
     // -1 significa que no hay ninguna fila en edicion
     private int idEnEdicion = -1;
 
-    // Evita lanzar dos consultas al mismo tiempo.
+    // El volatile boolean es para evitar lanzar dos consultas al mismo tiempo.
     private volatile boolean consultando = false;
 
     @FXML
@@ -69,12 +69,21 @@ public class ClienteController {
         consultando = true;
 
         Thread hilo = new Thread(() -> {
-            List<Cliente> resultado = consulta.get();
+            try {
+                // DEMO: simula una consulta lenta (3 s) para comprobar que la ventana no se congela.
+                // Quitar esta linea despues de la defensa.
+                Thread.sleep(3000);
 
-            Platform.runLater(() -> {
-                datos.setAll(resultado);
-                consultando = false;
-            });
+                List<Cliente> resultado = consulta.get();
+
+                Platform.runLater(() -> {
+                    datos.setAll(resultado);
+                    consultando = false;
+                });
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                Platform.runLater(() -> consultando = false);
+            }
         }, "Hilo-Consulta-Clientes");
         hilo.setDaemon(true);
         hilo.start();

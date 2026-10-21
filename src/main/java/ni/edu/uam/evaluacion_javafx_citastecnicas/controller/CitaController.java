@@ -52,7 +52,7 @@ public class CitaController {
 
     private int idEnEdicion = -1;
 
-    // Evita lanzar dos consultas al mismo tiempo.
+    // El volatile boolean evita lanzar dos consultas al mismo tiempo.
     private volatile boolean consultando = false;
 
     @FXML
@@ -91,18 +91,28 @@ public class CitaController {
         consultando = true;
 
         Thread hilo = new Thread(() -> {
-            List<CitaTecnica> resultado = consulta.get();
+            try {
+                // DEMO: simula una consulta lenta (3 s) para comprobar que la ventana no se congela.
+                // Quitar esta linea despues de la defensa.
+                Thread.sleep(3000);
 
-            Platform.runLater(() -> {
-                datos.setAll(resultado);
-                consultando = false;
-            });
+                List<CitaTecnica> resultado = consulta.get();
+
+                Platform.runLater(() -> {
+                    datos.setAll(resultado);
+                    consultando = false;
+                });
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                Platform.runLater(() -> consultando = false);
+            }
         }, "Hilo-Consulta-Citas");
         hilo.setDaemon(true);
         hilo.start();
     }
 
     private void cargar() {
+        // Lo convierte en un supplier para que lo pueda procesar ese metodo.
         consultarEnHilo(dao::listar);
     }
 
