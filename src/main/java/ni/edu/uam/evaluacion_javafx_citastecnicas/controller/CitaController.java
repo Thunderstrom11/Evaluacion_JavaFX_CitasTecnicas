@@ -92,8 +92,7 @@ public class CitaController {
 
         Thread hilo = new Thread(() -> {
             try {
-                // DEMO: simula una consulta lenta (3 s) para comprobar que la ventana no se congela.
-                // Quitar esta linea despues de la defensa.
+                //demo
                 Thread.sleep(3000);
 
                 List<CitaTecnica> resultado = consulta.get();
