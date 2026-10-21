@@ -1,5 +1,6 @@
 package ni.edu.uam.evaluacion_javafx_citastecnicas.controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +13,9 @@ import ni.edu.uam.evaluacion_javafx_citastecnicas.dao.ClienteDAO;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.model.Cliente;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.util.AlertUtils;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.util.Validador;
+
+import java.util.List;
+import java.util.function.Supplier;
 
 public class ClienteController {
 
@@ -37,6 +41,9 @@ public class ClienteController {
     // -1 significa que no hay ninguna fila en edicion
     private int idEnEdicion = -1;
 
+    // Evita lanzar dos consultas al mismo tiempo.
+    private volatile boolean consultando = false;
+
     @FXML
     public void initialize() {
         colId.setCellValueFactory(f -> new javafx.beans.property.SimpleIntegerProperty(f.getValue().getId()));
@@ -54,9 +61,28 @@ public class ClienteController {
         cargar();
     }
 
+    // Ejecuta la consulta JDBC en un hilo de fondo para no congelar la pantalla.
+    private void consultarEnHilo(Supplier<List<Cliente>> consulta) {
+        if (consultando) {
+            return;
+        }
+        consultando = true;
+
+        Thread hilo = new Thread(() -> {
+            List<Cliente> resultado = consulta.get();
+
+            Platform.runLater(() -> {
+                datos.setAll(resultado);
+                consultando = false;
+            });
+        }, "Hilo-Consulta-Clientes");
+        hilo.setDaemon(true);
+        hilo.start();
+    }
+
     //La tabla se refresca despues de cada operacion.
     private void cargar() {
-        datos.setAll(dao.listar());
+        consultarEnHilo(dao::listar);
     }
 
     @FXML
@@ -66,7 +92,7 @@ public class ClienteController {
         if (Validador.vacio(texto)) {
             cargar();
         } else {
-            datos.setAll(dao.buscar(texto));
+            consultarEnHilo(() -> dao.buscar(texto));
         }
     }
 

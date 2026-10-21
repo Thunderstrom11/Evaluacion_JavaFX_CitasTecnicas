@@ -1,5 +1,6 @@
 package ni.edu.uam.evaluacion_javafx_citastecnicas.controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,6 +19,8 @@ import ni.edu.uam.evaluacion_javafx_citastecnicas.util.Validador;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.function.Supplier;
 
 public class CitaController {
 
@@ -49,6 +52,9 @@ public class CitaController {
 
     private int idEnEdicion = -1;
 
+    // Evita lanzar dos consultas al mismo tiempo.
+    private volatile boolean consultando = false;
+
     @FXML
     public void initialize() {
         colId.setCellValueFactory(f -> new javafx.beans.property.SimpleIntegerProperty(f.getValue().getId()));
@@ -77,8 +83,27 @@ public class CitaController {
         cmbCliente.setItems(FXCollections.observableArrayList(clienteDAO.listar()));
     }
 
+    // Ejecuta la consulta JDBC en un hilo de fondo para no congelar la pantalla.
+    private void consultarEnHilo(Supplier<List<CitaTecnica>> consulta) {
+        if (consultando) {
+            return;
+        }
+        consultando = true;
+
+        Thread hilo = new Thread(() -> {
+            List<CitaTecnica> resultado = consulta.get();
+
+            Platform.runLater(() -> {
+                datos.setAll(resultado);
+                consultando = false;
+            });
+        }, "Hilo-Consulta-Citas");
+        hilo.setDaemon(true);
+        hilo.start();
+    }
+
     private void cargar() {
-        datos.setAll(dao.listar());
+        consultarEnHilo(dao::listar);
     }
 
     //filtros
@@ -92,7 +117,7 @@ public class CitaController {
             cargar();
             return;
         }
-        datos.setAll(dao.filtrar(estado, fecha));
+        consultarEnHilo(() -> dao.filtrar(estado, fecha));
     }
 
     // los filtros se pueden limpiar para recuperar todos los registros.
