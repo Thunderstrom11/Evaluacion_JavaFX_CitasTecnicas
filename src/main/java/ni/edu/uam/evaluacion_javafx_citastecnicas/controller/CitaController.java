@@ -10,12 +10,17 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.dao.CitaTecnicaDAO;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.dao.ClienteDAO;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.model.CitaTecnica;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.model.Cliente;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.util.AlertUtils;
+import ni.edu.uam.evaluacion_javafx_citastecnicas.util.HiloCarga;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.util.Validador;
+import javafx.application.Platform;
+import java.util.List;
+
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -98,8 +103,7 @@ public class CitaController {
         btnEliminar.disableProperty().bind(
                 tblCitas.getSelectionModel().selectedItemProperty().isNull());
 
-        cargarClientes();
-        cargar();
+        cargarTodo();
     }
 
     // ComboBox con los clientes existentes.
@@ -107,10 +111,37 @@ public class CitaController {
         cmbCliente.setItems(FXCollections.observableArrayList(clienteDAO.listar()));
     }
 
-    private void cargar() {
-        datos.setAll(dao.listar());
-        filtrar();
+
+    private record CargaCitas(List<Cliente> clientes, List<CitaTecnica> citas) {
     }
+
+    private void cargarTodo() {
+        tblCitas.setPlaceholder(new Label("Cargando citas..."));
+
+        HiloCarga.ejecutar(
+                "Hilo-Carga-Citas",
+                () -> new CargaCitas(clienteDAO.listar(), dao.listar()),
+                carga -> {
+                    cmbCliente.setItems(FXCollections.observableArrayList(carga.clientes()));
+                    datos.setAll(carga.citas());
+                    filtrar();
+                    tblCitas.setPlaceholder(new Label("Sin citas registradas"));
+                },
+                ex -> {
+                    tblCitas.setPlaceholder(new Label("No se pudieron cargar las citas"));
+                    AlertUtils.error("Error al cargar", String.valueOf(ex.getMessage()));
+                });
+    }
+
+    private void cargar() {
+        HiloCarga.ejecutar("Hilo-Recarga-Citas", dao::listar,
+                citas -> {
+                    datos.setAll(citas);
+                    filtrar();
+                },
+                ex -> AlertUtils.error("Error al cargar", String.valueOf(ex.getMessage())));
+    }
+
 
 
 

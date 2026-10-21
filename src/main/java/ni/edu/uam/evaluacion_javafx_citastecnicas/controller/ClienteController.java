@@ -9,10 +9,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.dao.ClienteDAO;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.model.Cliente;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.util.AlertUtils;
+import ni.edu.uam.evaluacion_javafx_citastecnicas.util.HiloCarga;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.util.Validador;
+import javafx.application.Platform;
+import java.util.List;
 
 public class ClienteController {
 
@@ -74,8 +78,20 @@ public class ClienteController {
 
     //La tabla se refresca despues de cada operacion.
     private void cargar() {
-        datos.setAll(dao.listar());
-        filtrar();
+        tblClientes.setPlaceholder(new Label("Cargando clientes..."));
+
+        HiloCarga.ejecutar(
+                "Hilo-Carga-Clientes",
+                dao::listar,
+                lista -> {
+                    datos.setAll(lista);
+                    filtrar();
+                    tblClientes.setPlaceholder(new Label("Sin clientes registrados"));
+                },
+                ex -> {                                        // el error
+                    tblClientes.setPlaceholder(new Label("No se pudieron cargar los clientes"));
+                    AlertUtils.error("Error al cargar", String.valueOf(ex.getMessage()));
+                });
     }
 
     private void filtrar() {

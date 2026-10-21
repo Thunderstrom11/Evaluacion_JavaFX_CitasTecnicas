@@ -34,7 +34,7 @@
                 <TextField fx:id="txtId" prefWidth="90.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
                 <Label text="Cliente:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                <ComboBox fx:id="cmbCliente" editable="true" prefWidth="260.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                <ComboBox fx:id="cmbCliente" prefWidth="260.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
 
                 <Label text="Fecha:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                 <DatePicker fx:id="dtpFecha" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
