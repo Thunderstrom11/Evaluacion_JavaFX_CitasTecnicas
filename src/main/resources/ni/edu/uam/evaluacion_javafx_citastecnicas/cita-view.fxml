@@ -34,7 +34,7 @@
                 <TextField fx:id="txtId" prefWidth="90.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
                 <Label text="Cliente:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                <ComboBox fx:id="cmbCliente" prefWidth="260.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                <ComboBox fx:id="cmbCliente" editable="true" prefWidth="260.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
 
                 <Label text="Fecha:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                 <DatePicker fx:id="dtpFecha" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -69,22 +69,24 @@
         <HBox spacing="10.0">
             <children>
                 <Button onAction="#guardar" prefWidth="110.0" text="Guardar" />
-                <Button onAction="#editar" prefWidth="110.0" text="Editar" />
-                <Button onAction="#eliminar" prefWidth="110.0" text="Eliminar" />
+                <Button fx:id="btnEditar" disable="true" onAction="#editar" prefWidth="110.0" text="Editar" />
+                <Button fx:id="btnEliminar" disable="true" onAction="#eliminar" prefWidth="110.0" text="Eliminar" />
                 <Button onAction="#limpiar" prefWidth="110.0" text="Limpiar" />
-                <Button onAction="#cerrar" prefWidth="110.0" text="Cerrar" />
             </children>
+         <padding>
+            <Insets bottom="25.0" />
+         </padding>
         </HBox>
 
-        <!-- Filtros (RF06) -->
+        <!-- Buscador en tiempo real + filtros (RF06) -->
         <HBox alignment="CENTER_LEFT" spacing="10.0">
             <children>
-                <Label text="Filtrar por estado:" />
-                <ComboBox fx:id="cmbFiltroEstado" prefWidth="180.0" />
-                <Label text="y fecha:" />
-                <DatePicker fx:id="dtpFiltroFecha" prefWidth="160.0" />
-                <Button onAction="#filtrar" prefWidth="100.0" text="Filtrar" />
-                <Button onAction="#limpiarFiltros" prefWidth="130.0" text="Limpiar filtros" />
+                <Label text="Buscador:" />
+                <TextField fx:id="txtBuscador" prefWidth="280.0" promptText="Cliente, servicio, estado..." />
+                <Label text="Estado:" />
+                <ComboBox fx:id="cmbFiltroEstado" prefWidth="150.0" />
+                <Label text="Fecha:" />
+                <DatePicker fx:id="dtpFiltroFecha" prefWidth="150.0" />
             </children>
         </HBox>
 

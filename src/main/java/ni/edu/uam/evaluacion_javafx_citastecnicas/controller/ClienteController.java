@@ -2,12 +2,13 @@ package ni.edu.uam.evaluacion_javafx_citastecnicas.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.dao.ClienteDAO;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.model.Cliente;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.util.AlertUtils;
@@ -23,6 +24,9 @@ public class ClienteController {
     @FXML private CheckBox chkActivo;
     @FXML private TextField txtBuscar;
 
+    @FXML private Button btnEditar;
+    @FXML private Button btnEliminar;
+
     @FXML private TableView<Cliente> tblClientes;
     @FXML private TableColumn<Cliente, Number> colId;
     @FXML private TableColumn<Cliente, String> colNombres;
@@ -33,6 +37,9 @@ public class ClienteController {
 
     private final ClienteDAO dao = new ClienteDAO();
     private final ObservableList<Cliente> datos = FXCollections.observableArrayList();
+
+    // Lista que ve la tabla
+    private FilteredList<Cliente> filtrados;
 
     // -1 significa que no hay ninguna fila en edicion
     private int idEnEdicion = -1;
@@ -47,33 +54,47 @@ public class ClienteController {
         colActivo.setCellValueFactory(f ->
                 new javafx.beans.property.SimpleBooleanProperty(f.getValue().isActivo()));
 
-        tblClientes.setItems(datos);
+        filtrados = new FilteredList<>(datos, c -> true);
+        tblClientes.setItems(filtrados);
+        txtBuscar.textProperty().addListener((obs, anterior, nuevo) -> filtrar());
+
         txtId.setDisable(true);
         chkActivo.setSelected(true);
 
+        // Buscador en tiempo real: cada tecla vuelve a aplicar el predicado
+        txtBuscar.textProperty().addListener((obs, anterior, nuevo) -> filtrar());
+
+        // Editar / Eliminar solo se habilitan cuando hay una fila seleccionada
+        btnEditar.disableProperty().bind(
+                tblClientes.getSelectionModel().selectedItemProperty().isNull());
+        btnEliminar.disableProperty().bind(
+                tblClientes.getSelectionModel().selectedItemProperty().isNull());
         cargar();
     }
 
     //La tabla se refresca despues de cada operacion.
     private void cargar() {
         datos.setAll(dao.listar());
+        filtrar();
     }
 
-    @FXML
-    private void buscar() {
-        String texto = txtBuscar.getText();
+    private void filtrar() {
+        String texto = txtBuscar.getText() == null
+                ? "" : txtBuscar.getText().trim().toLowerCase();
 
-        if (Validador.vacio(texto)) {
-            cargar();
-        } else {
-            datos.setAll(dao.buscar(texto));
-        }
+        filtrados.setPredicate(c -> {
+            if (texto.isEmpty()) {
+                return true;
+            }
+            return coincide(c.getNombres(), texto)
+                    || coincide(c.getApellidos(), texto)
+                    || coincide(c.getTelefono(), texto)
+                    || coincide(c.getCorreo(), texto);
+        });
     }
 
-    @FXML
-    private void verTodos() {
-        txtBuscar.clear();
-        cargar();
+    private boolean coincide(String valor, String texto) {
+        return valor != null && valor.toLowerCase().contains(texto);
     }
 
     @FXML
@@ -201,8 +222,4 @@ public class ClienteController {
         tblClientes.getSelectionModel().clearSelection();
     }
 
-    @FXML
-    private void cerrar() {
-        ((Stage) txtNombres.getScene().getWindow()).close();
-    }
 }

@@ -57,18 +57,18 @@
 
     <HBox spacing="10.0">
         <Button onAction="#guardar" prefWidth="110.0" text="Guardar" />
-        <Button onAction="#editar" prefWidth="110.0" text="Editar" />
-        <Button onAction="#eliminar" prefWidth="110.0" text="Eliminar" />
-        <Button onAction="#limpiar" prefWidth="110.0" text="Limpiar" />
-        <Button onAction="#cerrar" prefWidth="110.0" text="Cerrar" />
+        <Button fx:id="btnEditar" disable="true" onAction="#editar" prefWidth="110.0" text="Editar" />
+        <Button fx:id="btnEliminar" disable="true" onAction="#eliminar" prefWidth="110.0" text="Eliminar" />
+        <Button onAction="#limpiar" prefWidth="110.0" text="Limpiar campos" />
+      <padding>
+         <Insets bottom="25.0" />
+      </padding>
     </HBox>
 
 
     <HBox alignment="CENTER_LEFT" spacing="10.0">
-        <Label text="Buscar:" />
-        <TextField fx:id="txtBuscar" prefWidth="320.0" promptText="Ana Gutierrez" />
-        <Button onAction="#buscar" prefWidth="100.0" text="Buscar" />
-        <Button onAction="#verTodos" prefWidth="100.0" text="Ver todos" />
+        <Label text="Buscador:" />
+        <TextField fx:id="txtBuscar" prefHeight="26.0" prefWidth="444.0" promptText="Escriba nombre, apellido, telefono o correo..." />
     </HBox>
 
 

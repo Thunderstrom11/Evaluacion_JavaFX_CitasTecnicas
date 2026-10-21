@@ -2,13 +2,14 @@ package ni.edu.uam.evaluacion_javafx_citastecnicas.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.dao.CitaTecnicaDAO;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.dao.ClienteDAO;
 import ni.edu.uam.evaluacion_javafx_citastecnicas.model.CitaTecnica;
@@ -21,6 +22,9 @@ import java.time.LocalTime;
 
 public class CitaController {
 
+    // Opcion del combo de filtro que representa "sin filtro de estado".
+    private static final String TODOS_LOS_ESTADOS = "Todos los estados";
+
     //formulario
     @FXML private TextField txtId;
     @FXML private ComboBox<Cliente> cmbCliente;
@@ -30,7 +34,12 @@ public class CitaController {
     @FXML private TextField txtDescripcion;
     @FXML private ComboBox<String> cmbEstado;
 
+    //botones
+    @FXML private Button btnEditar;
+    @FXML private Button btnEliminar;
+
     //filtros
+    @FXML private TextField txtBuscador;
     @FXML private ComboBox<String> cmbFiltroEstado;
     @FXML private DatePicker dtpFiltroFecha;
 
@@ -45,7 +54,12 @@ public class CitaController {
 
     private final CitaTecnicaDAO dao = new CitaTecnicaDAO();
     private final ClienteDAO clienteDAO = new ClienteDAO();
+
+    // Lista completa que viene de la base de datos
     private final ObservableList<CitaTecnica> datos = FXCollections.observableArrayList();
+
+    // Lista que ve la tabla: "datos" pasando por buscador + filtros
+    private FilteredList<CitaTecnica> filtrados;
 
     private int idEnEdicion = -1;
 
@@ -58,15 +72,31 @@ public class CitaController {
         colServicio.setCellValueFactory(f -> new javafx.beans.property.SimpleStringProperty(f.getValue().getTipoServicio()));
         colEstado.setCellValueFactory(f -> new javafx.beans.property.SimpleStringProperty(f.getValue().getEstado()));
 
-        tblCitas.setItems(datos);
 
-        // Estados permitidos en el formulario y en el filtro.
+        filtrados = new FilteredList<>(datos, c -> true);
+        tblCitas.setItems(filtrados);
+
+
         cmbEstado.setItems(FXCollections.observableArrayList(Validador.ESTADOS));
-        cmbFiltroEstado.setItems(FXCollections.observableArrayList(Validador.ESTADOS));
-        cmbFiltroEstado.setPromptText("Todos los estados");
+
+
+        cmbFiltroEstado.setItems(FXCollections.observableArrayList(TODOS_LOS_ESTADOS));
+        cmbFiltroEstado.getItems().addAll(Validador.ESTADOS);
+        cmbFiltroEstado.setValue(TODOS_LOS_ESTADOS);
+
         dtpFiltroFecha.setPromptText("Todas las fechas");
 
         txtId.setDisable(true);
+
+        txtBuscador.textProperty().addListener((obs, anterior, nuevo) -> filtrar());
+        cmbFiltroEstado.valueProperty().addListener((obs, anterior, nuevo) -> filtrar());
+        dtpFiltroFecha.valueProperty().addListener((obs, anterior, nuevo) -> filtrar());
+
+
+        btnEditar.disableProperty().bind(
+                tblCitas.getSelectionModel().selectedItemProperty().isNull());
+        btnEliminar.disableProperty().bind(
+                tblCitas.getSelectionModel().selectedItemProperty().isNull());
 
         cargarClientes();
         cargar();
@@ -79,32 +109,52 @@ public class CitaController {
 
     private void cargar() {
         datos.setAll(dao.listar());
+        filtrar();
     }
 
-    //filtros
 
-    @FXML
+
     private void filtrar() {
-        String estado = cmbFiltroEstado.getSelectionModel().getSelectedItem();
+        String texto = txtBuscador.getText() == null
+                ? "" : txtBuscador.getText().trim().toLowerCase();
+
+        String estadoSeleccionado = cmbFiltroEstado.getValue();
+        String estado = (estadoSeleccionado == null
+                || TODOS_LOS_ESTADOS.equals(estadoSeleccionado)) ? null : estadoSeleccionado;
+
         LocalDate fecha = dtpFiltroFecha.getValue();
 
-        if (estado == null && fecha == null) {
-            cargar();
-            return;
-        }
-        datos.setAll(dao.filtrar(estado, fecha));
+        filtrados.setPredicate(c -> {
+            // Filtro por estado
+            if (estado != null && !estado.equalsIgnoreCase(c.getEstado())) {
+                return false;
+            }
+            // Filtro por fecha
+            if (fecha != null && !fecha.equals(c.getFecha())) {
+                return false;
+            }
+            // Texto del buscador
+            if (texto.isEmpty()) {
+                return true;
+            }
+            // Coincidencia exacta por ID
+            if (texto.matches("\\d+") && String.valueOf(c.getId()).equals(texto)) {
+                return true;
+            }
+            return coincide(c.getNombreCliente(), texto)
+                    || coincide(c.getTipoServicio(), texto)
+                    || coincide(c.getDescripcion(), texto)
+                    || coincide(c.getEstado(), texto)
+                    || coincide(c.getFecha() == null ? null : c.getFecha().toString(), texto);
+        });
     }
 
-    // los filtros se pueden limpiar para recuperar todos los registros.
-    @FXML
-    private void limpiarFiltros() {
-        cmbFiltroEstado.getSelectionModel().clearSelection();
-        dtpFiltroFecha.setValue(null);
-        cargar();
+    private boolean coincide(String valor, String texto) {
+        return valor != null && valor.toLowerCase().contains(texto);
     }
 
 
-    //crud
+
     @FXML
     private void guardar() {
         Cliente cliente = cmbCliente.getSelectionModel().getSelectedItem();
@@ -235,8 +285,4 @@ public class CitaController {
         tblCitas.getSelectionModel().clearSelection();
     }
 
-    @FXML
-    private void cerrar() {
-        ((Stage) txtHora.getScene().getWindow()).close();
-    }
 }

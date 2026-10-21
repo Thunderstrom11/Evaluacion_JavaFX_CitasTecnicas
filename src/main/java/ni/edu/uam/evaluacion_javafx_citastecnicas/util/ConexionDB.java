@@ -14,7 +14,7 @@ public class ConexionDB {
     private static final String URL =
             "jdbc:postgresql://localhost:5432/gestion_citas";
     private static final String USUARIO = "postgres";
-    private static final String CLAVE = "12345";
+    private static final String CLAVE = "diegoch1207";
 
     private ConexionDB() {
     }
